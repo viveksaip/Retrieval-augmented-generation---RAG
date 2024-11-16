@@ -16,7 +16,7 @@ Initialization:
 
 ## Output Example
 ### Response before adding new knowledge:
-FAISS is a library for efficient similarity search and clustering of dense vectors.
+* FAISS is a library for efficient similarity search and clustering of dense vectors.
 
 ### Response after adding new knowledge:
-FAISS supports both CPU and GPU for vector similarity search. FAISS is a library for efficient similarity search.
+* FAISS supports both CPU and GPU for vector similarity search. FAISS is a library for efficient similarity search.
