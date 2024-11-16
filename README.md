@@ -6,12 +6,12 @@ Initialization:
 * Use FAISS to manage a vector index for retrieval.
 
 ## Dynamic Updates:
-New documents are encoded and added to the FAISS index.
-The original list of documents is updated for reference.
+* New documents are encoded and added to the FAISS index.
+* The original list of documents is updated for reference.
 
 ## Inference:
-A query retrieves relevant documents from the FAISS index.
-The generator uses the retrieved documents as context to generate a response.
+* A query retrieves relevant documents from the FAISS index.
+* The generator uses the retrieved documents as context to generate a response.
 
 
 ## Output Example
