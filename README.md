@@ -2,8 +2,8 @@
 
 ## How It Works
 Initialization:
-Use SentenceTransformers to encode documents into dense vectors.
-Use FAISS to manage a vector index for retrieval.
+* Use SentenceTransformers to encode documents into dense vectors.
+* Use FAISS to manage a vector index for retrieval.
 
 ## Dynamic Updates:
 New documents are encoded and added to the FAISS index.
