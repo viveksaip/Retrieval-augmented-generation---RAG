@@ -1,9 +1,9 @@
 #pip install faiss-cpu sentence-transformers transformers
 
-
+# Required libraries
 import faiss
 from sentence_transformers import SentenceTransformer
-from transformers import pipeline
+from transformers import pipeline, GPT2LMHeadModel, GPT2Tokenizer
 
 # Step 1: Initialize components
 # Load a SentenceTransformer for dense embeddings
@@ -13,9 +13,8 @@ retriever_model = SentenceTransformer("all-MiniLM-L6-v2")
 embedding_dim = retriever_model.get_sentence_embedding_dimension()
 index = faiss.IndexFlatL2(embedding_dim)
 
-# Generator model for response generation
-generator = pipeline("text2text-generation", model="t5-small")
-# generator = pipeline("text2text-generation", model="t5-small",device=0) #colab GPU usage
+# Initialize a GPT-based model (e.g., GPT-2 or GPT-3, but here we use GPT-2)
+generator = pipeline("text-generation", model="gpt2", tokenizer="gpt2")
 
 # Example knowledge base (documents)
 documents = [
@@ -45,20 +44,29 @@ def add_document(new_document, index, retriever_model):
     index.add(new_embedding)
     documents.append(new_document)
 
-# Step 5: Generate responses using retrieved documents
+# Step 5: Generate responses using GPT and retrieved documents
 def generate_response(query):
+    # Retrieve relevant documents based on the query
     retrieved_docs = retrieve_documents(query, index, retriever_model)
-    context = " ".join(retrieved_docs)
-    prompt = f"Context: {context}\nQuestion: {query}\nAnswer:"
-    response = generator(prompt, max_length=50, num_beams=2)
-    return response[0]["generated_text"]
+    
+    if retrieved_docs:
+        # If there are relevant documents, use them as context for GPT
+        context = " ".join(retrieved_docs)
+        prompt = f"Context: {context}\nQuestion: {query}\nAnswer:"
+    else:
+        # If no relevant documents, use GPT's generalization
+        prompt = f"Question: {query}\nAnswer:"
+    
+    # Generate a response from GPT
+    response = generator(prompt, max_length=100, num_return_sequences=1)[0]["generated_text"]
+    return response
 
 # Example Usage
 query = "What is FAISS?"
 print("Response before adding new knowledge:")
 print(generate_response(query))
 
-# Add new knowledge
+# Add new knowledge to the system
 add_document("FAISS supports both CPU and GPU for vector similarity search.", index, retriever_model)
 
 print("\nResponse after adding new knowledge:")
