@@ -15,6 +15,7 @@ index = faiss.IndexFlatL2(embedding_dim)
 
 # Generator model for response generation
 generator = pipeline("text2text-generation", model="t5-small")
+# generator = pipeline("text2text-generation", model="t5-small",device=0) #colab GPU usage
 
 # Example knowledge base (documents)
 documents = [
